@@ -14,7 +14,8 @@ const iconBC = (name) =>
 
 class LeftNav extends React.Component {
   state = {
-    // Icons: Icon
+    currentKey: '',
+    openKey: ''
   }
 
   getMenuNodes = (menuList) => {
@@ -29,8 +30,8 @@ class LeftNav extends React.Component {
           </Menu.Item>
         )
       } else {
-        item.children.find(cItem => cItem.path === path)
-        this.opeKey = item.path
+        const cItem = item.children.find(cItem => cItem.path === path)
+        if (cItem) this.opeKey = item.path
         return (
           <SubMenu key={item.path} icon={item.icon ? iconBC(item.icon) : ''} title={item.title}>
             {this.getMenuNodes(item.children)}
@@ -39,26 +40,29 @@ class LeftNav extends React.Component {
       }
     })
   }
-  handleClick = e => {
-    console.log(e)
-  }
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
+    console.log('UNSAFE_componentWillMount')
     this.menuNodes = this.getMenuNodes(menuList)
+
+  }
+  componentDidMount () {
+    console.log('componentDidMount')
+
   }
   render () {
-    console.log(this.props)
     var path = this.props.location.pathname
+    const openKey = this.opeKey
     return (
       <Sider breakpoint="lg" width={256} className="left-nav">
         <div className="logo" />
         <Menu
           onClick={this.handleClick}
           selectedKeys={[path]}
-          defaultOpenKeys={['/menus']}
+          defaultOpenKeys={[openKey]}
           mode="inline"
           theme="dark"
         >
-          {this.getMenuNodes(menuList)}
+          {this.menuNodes}
         </Menu>
       </Sider>
     )
