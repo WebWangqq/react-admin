@@ -35,7 +35,7 @@ class User extends React.Component {
         align: 'center',
         render: (text, record, index) => (
           <Space size="middle">
-            <Button type="link" onClick={() => this.handleEdit(record, index)}>编辑</Button>
+            <Button type="link" onClick={() => this.handleEdit(record)}>编辑</Button>
             <Button type="link" onClick={() => this.handleDelete(record.id)}>删除</Button>
           </Space>
 
@@ -43,7 +43,7 @@ class User extends React.Component {
       }
     ]
   }
-  handleEdit = (record, index) => {
+  handleEdit = (record) => {
     this.refs.addForm.loadInfo(false, record)
   }
   handleDelete = (id) => {
@@ -72,9 +72,11 @@ class User extends React.Component {
       console.log('执行父组件')
       const tableData = [
         { id: 1, name: '王小明1', age: 22, address: '西湖区胡迪工1号' },
-        { id: 2, name: '王小明2', age: 22, address: '西湖区胡迪工1号' },
-        { id: 3, name: '王小明3', age: 22, address: '西湖区胡迪工1号' },
-        { id: 4, name: '王小明4', age: 22, address: '西湖区胡迪工1号' }
+        { id: 2, name: '王小明2', age: 22, address: '西湖区胡迪工2号' },
+        { id: 3, name: '王小明3', age: 22, address: '西湖区胡迪工3号' },
+        { id: 4, name: '王小明4', age: 22, address: '西湖区胡迪工4号' },
+        { id: 5, name: '王小明5', age: 22, address: '西湖区胡迪工5号' },
+        { id: 6, name: '王小明6', age: 22, address: '西湖区胡迪工6号' }
       ]
       this.setState({
         tableData,

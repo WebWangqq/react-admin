@@ -6,6 +6,7 @@ const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 20 },
 };
+
 class AddForm extends React.Component {
   static propTypes = {
     loadMore: PropTypes.func.isRequired
@@ -15,25 +16,25 @@ class AddForm extends React.Component {
     addOpration: true,
     userInfo: {}
   }
-  formRef = React.createRef()
   loadInfo = (addOpration, userInfo) => {
+    console.log(this)
     this.setState({
       visible: true,
       addOpration,
       userInfo: Object.assign({}, userInfo)
     }, () => {
-      if (this.formRef.current) {
+      if (this.refs.formRef) {
         if (userInfo) {
-          this.formRef.current.setFieldsValue(userInfo)
+          this.refs.formRef.setFieldsValue(userInfo)
         } else {
-          this.formRef.current.resetFields()
+          this.refs.formRef.resetFields()
         }
       }
     })
   }
 
   handleOk = () => {
-    this.formRef.current.validateFields().then(values => {
+    this.refs.formRef.validateFields().then(values => {
       this.setState({
         visible: false
       })
@@ -54,14 +55,13 @@ class AddForm extends React.Component {
       <Modal visible={visible}
         title={addOpration ? '添加用户' : '编辑用户'}
         centered
-        maskClosable={false}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
         okText={'确定'}
         cancelText={'取消'}
       >
         <Form {...layout}
-          ref={this.formRef}
+          ref="formRef"
           initialValues={userInfo}>
           <Item
             label="用户名"

@@ -20,33 +20,39 @@ class LeftNav extends React.Component {
 
   getMenuNodes = (menuList) => {
     var path = this.props.location.pathname
+    console.log(path)
     return menuList.map(item => {
-      if (!item.children) {
-        return (
-          <Menu.Item key={item.path} icon={item.icon ? iconBC(item.icon) : ''} >
-            <Link to={item.path}>
-              <span>{item.title}</span>
-            </Link>
-          </Menu.Item>
-        )
+      if (!item.hidden) {
+        if (!item.children || item.children.length === 0) {
+          return (
+            <Menu.Item key={item.path} icon={item.icon ? iconBC(item.icon) : ''} >
+              <Link to={item.path}>
+                <span>{item.title}</span>
+              </Link>
+            </Menu.Item>
+          )
+        } else {
+          const cItem = item.children.find(cItem => cItem.path === path)
+          if (cItem) this.opeKey = item.path
+          return (
+            <SubMenu key={item.path} icon={item.icon ? iconBC(item.icon) : ''} title={item.title}>
+              {this.getMenuNodes(item.children)}
+            </SubMenu>
+          )
+        }
       } else {
-        const cItem = item.children.find(cItem => cItem.path === path)
-        if (cItem) this.opeKey = item.path
-        return (
-          <SubMenu key={item.path} icon={item.icon ? iconBC(item.icon) : ''} title={item.title}>
-            {this.getMenuNodes(item.children)}
-          </SubMenu>
-        )
+        return false
       }
+
     })
   }
   UNSAFE_componentWillMount () {
-    console.log('UNSAFE_componentWillMount')
+    // console.log('UNSAFE_componentWillMount')
     this.menuNodes = this.getMenuNodes(menuList)
 
   }
   componentDidMount () {
-    console.log('componentDidMount')
+    // console.log('componentDidMount')
 
   }
   render () {

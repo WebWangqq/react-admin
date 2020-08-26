@@ -14,11 +14,11 @@ import LeftNav from '../../components/left-nav/left-nav'
 // import Role from '../role/role'
 // import Menu1 from '../menu1/menu1'
 // import Menu2 from '../menu2/menu2'
-import Detail from '../detail/detail'
+// import Detail from '../detail/detail'
 const { Footer, Content } = Layout;
 
 const load = component => {
-  return import(`../${component}`)
+  return import(`../${component}.jsx`)
 }
 class Admin extends Component {
   state = {
@@ -28,12 +28,13 @@ class Admin extends Component {
   handleRouters (menu) {
     let childRouter = []
     menu.forEach(item => {
-      if (item.children) {
+      if (item.children && item.children.length > 0) {
         childRouter = [...childRouter, ...this.handleRouters(item.children)]
       } else {
         return childRouter.push(item)
       }
     })
+    console.log(childRouter)
     return childRouter
   }
   UNSAFE_componentWillMount () {
@@ -62,8 +63,7 @@ class Admin extends Component {
                 {
                   menusData.map((item, index) => <Route path={item.path} component={asyncComponent(() => load(item.component))} key={index} exact />)
                 }
-                <Route path='/user/detail/:id' component={Detail} />
-                <Route path='/menus/menu1/detail/:id' component={Detail} />
+                {/* <Route path='/news/detail/:sid' component={Detail} /> */}
                 <Redirect to='/index' />
               </Switch>
             </div>
