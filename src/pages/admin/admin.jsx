@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
-import memoryUtils from '../../utils/memoryUtils.js'
+
 import menuList from '../../config/menuConfig.js'
 import { asyncComponent } from '../../utils/asyncComponent.js'
 
 import HeaderNav from '../../components/header/header'
 import LeftNav from '../../components/left-nav/left-nav'
 
-// import Index from '../index/index'
-// import User from '../user/user'
-// import Role from '../role/role'
-// import Menu1 from '../menu1/menu1'
-// import Menu2 from '../menu2/menu2'
-// import Detail from '../detail/detail'
+
 const { Footer, Content } = Layout;
 
 const load = component => {
@@ -34,7 +29,6 @@ class Admin extends Component {
         return childRouter.push(item)
       }
     })
-    console.log(childRouter)
     return childRouter
   }
   UNSAFE_componentWillMount () {
@@ -43,7 +37,8 @@ class Admin extends Component {
   render () {
     const { menus } = this.state
     let menusData = this.handleRouters(menus)
-    const user = memoryUtils.user
+
+    const user = this.props.user
     if (!user || !user.id) {
       return <Redirect to='/login' />
     }
@@ -55,15 +50,9 @@ class Admin extends Component {
           <Content style={{ padding: '10px' }}>
             <div style={{ width: '100%', height: '100%', overflow: 'auto' }}>
               <Switch>
-                {/* <Route path='/index' component={Index} />
-                <Route path='/user' component={User} />
-                <Route path='/role' component={Role} />
-                <Route path='/menus/menu1' component={Menu1} />
-                <Route path='/menus/menu2' component={Menu2} /> */}
                 {
                   menusData.map((item, index) => <Route path={item.path} component={asyncComponent(() => load(item.component))} key={index} exact />)
                 }
-                {/* <Route path='/news/detail/:sid' component={Detail} /> */}
                 <Redirect to='/index' />
               </Switch>
             </div>
@@ -75,4 +64,9 @@ class Admin extends Component {
   }
 }
 
-export default Admin;
+export default connect(
+  state => ({
+    user: state.user
+  }),
+  {}
+)(Admin);

@@ -3,8 +3,16 @@ import axios from 'axios'
 axios.defaults.baseURL = '/api'
 
 axios.interceptors.request.use(config => {
+
+  // let token = localStorage.getItem('token')
+  // if (token) {
+  //   config.headers['Authorization'] = 'Bearer ' + token
+  // } else {
+  //   window.location.reload();
+  // }
   return config;
 }, error => {
+  // Do something with request error
   return Promise.reject(error);
 });
 
@@ -32,9 +40,6 @@ const apiAxios = (method, url, params, ContentType) => {
     axios(httpDefault)
       .then((res) => {
         resolve(res)
-        // else {
-        //   message.error(res.message)
-        // }
       }).catch((response) => {
         reject(response)
       })

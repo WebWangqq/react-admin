@@ -10,10 +10,9 @@ export const asyncComponent = loadComponent => (
     }
 
     UNSAFE_componentWillMount () {
-      if (this.hasLoadedComponent()) {
+      if (this.state.Component !== null) {
         return
       }
-
       loadComponent()
         .then(module => module.default)
         .then((Component) => {
@@ -25,9 +24,6 @@ export const asyncComponent = loadComponent => (
         })
     }
 
-    hasLoadedComponent () {
-      return this.state.Component !== null
-    }
 
     render () {
       const { Component } = this.state;

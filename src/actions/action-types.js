@@ -1,1 +1,7 @@
-export const HEADER_TITLE = 'HEADER_TITLE'
+export const SETHEADTITLE = 'SETHEADTITLE'
+export const RECEIVE_USER = 'RECEIVE_USER'
+export const SHOW_ERROE_MSG = 'SHOW_ERROE_MSG'
+
+export const RESET_USER = 'RESET_USER'
+
+export const RECEIVE_MENUS = 'RECEIVE_MENUS'

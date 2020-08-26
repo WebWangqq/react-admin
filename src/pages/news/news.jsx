@@ -32,7 +32,7 @@ class News extends React.Component {
   loadMore = async () => {
     var data = { page: 1, count: 10, type: 'image' }
     let res = await getJokes(data)
-    console.log(res)
+    // console.log(res)
     this.setState({
       loading: false,
       tableData: res.result
@@ -42,11 +42,11 @@ class News extends React.Component {
     this.loadMore()
   }
   handleDetail = (sid) => {
-    console.log(sid)
+    // console.log(sid)
     this.props.history.push('/news/detail/' + sid)
   }
   render () {
-    console.log(this.props)
+    // console.log(this.props)
     const { loading, tableData } = this.state
     return (
       <Card>

@@ -1,32 +1,27 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, message } from 'antd';
+import { connect } from 'react-redux'
+import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import './login.less'
 
 import logo from '../../assets/images/logo.png'
 
-import memoryUtils from '../../utils/memoryUtils.js'
-import storageUtils from '../../utils/storageUtils.js'
 import { Redirect } from 'react-router-dom';
+import { getLogin, getMenus } from '../../actions/user'
+
 
 const Item = Form.Item
 class Login extends Component {
   state = {
     initialValues: {
       username: 'admin',
-      password: '123456'
+      password: 'admin'
     }
   }
-  onFinish = values => {
-    // console.log('Received values of form: ', values);
-    setTimeout(() => {
-      message.success('登录成功')
-      var res = { username: 'admin', id: '1' }
-      memoryUtils.user = res
-      storageUtils.saveUser(res)
-      this.props.history.replace('/')
-    }, 100)
+  onFinish = async (values) => {
+    this.props.getLogin(values)
+    // this.props.history.replace('/index')
   }
   onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
@@ -42,10 +37,10 @@ class Login extends Component {
 
   }
   render () {
-    //如果用户登录跳转到
-    var user = memoryUtils.user
+    const { user, user: { errorMsg } } = this.props
+
     if (user && user.id) {
-      return <Redirect to='/' />
+      return <Redirect to='/index' />
     }
 
     const { initialValues } = this.state
@@ -56,7 +51,8 @@ class Login extends Component {
           <h1>React 后台管理系统</h1>
         </header>
         <section className="login-content">
-          <h2>用户登录</h2>
+          <div className={errorMsg ? "errorMsg show" : 'errorMsg'}>{errorMsg}</div>
+          <h2>用户登陆</h2>
           <Form
             name="normal_login"
             className="login-form"
@@ -86,7 +82,7 @@ class Login extends Component {
               />
             </Item>
             <Item>
-              <Button type="primary" htmlType="submit" className="login-form-button">登录</Button>
+              <Button type="primary" htmlType="submit" className="login-form-button">登陆</Button>
             </Item>
           </Form>
         </section>
@@ -95,4 +91,9 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default connect(
+  state => ({
+    user: state.user
+  }),
+  { getLogin, getMenus }
+)(Login);

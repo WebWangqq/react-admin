@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "mockjs": "^1.1.0",
     "redux-devtools-extension": "^2.13.8"
   }
 }

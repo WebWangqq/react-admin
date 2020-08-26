@@ -26,6 +26,23 @@
     background-color: #ffffff;
     border-radius: 10px;
     transform: translate(-50%,-50%);
+    .errorMsg{
+      visibility: hidden;
+      position: absolute;
+      top:0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: #ffffff;
+      line-height: 30px;
+      background-color: #f00;
+      transform: translateY(-30px);
+      transition: all .3s;
+      &.show{
+        visibility: visible;
+        transform: translateY(0);
+      }
+    }
     h2{
       margin:15px 0;
       text-align: center;

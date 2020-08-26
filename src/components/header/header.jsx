@@ -1,12 +1,12 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Layout, Button, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import './index.less'
 import menuList from '../../config/menuConfig.js'
-import memoryUtils from '../../utils/memoryUtils.js'
-import storageUtils from '../../utils/storageUtils.js'
 import { formatTime } from '../../utils/dateUtils.js'
+import { logOut } from '../../actions/user.js'
 const { Header } = Layout;
 const { confirm } = Modal;
 class HeaderNav extends React.Component {
@@ -21,6 +21,7 @@ class HeaderNav extends React.Component {
   }
   getTitle = () => {
     const path = this.props.location.pathname
+    console.log(path)
     let title
     menuList.forEach(item => {
       if (item.path === path) {
@@ -38,9 +39,10 @@ class HeaderNav extends React.Component {
       icon: <ExclamationCircleOutlined />,
       content: '确认退出此系统吗？',
       onOk: () => {
-        storageUtils.removeUser()
-        memoryUtils.user = {}
-        this.props.history.replace('/login')
+        this.props.logOut()
+        // storageUtils.removeUser()
+        // memoryUtils.user = {}
+        // this.props.history.replace('/login')
       },
       onCancel () {
         console.log('取消');
@@ -49,19 +51,20 @@ class HeaderNav extends React.Component {
   }
   componentDidMount () {
     this.getTime()
+
   }
+
   componentWillUnmount () {
     clearInterval(this.interId)
   }
   render () {
-    const title = this.getTitle()
     const { currentTime } = this.state
     return (
       <Header className="header-nav">
-        <div className="title-nav">{title}</div>
+        <div className="title-nav">{this.props.title}</div>
         <div className="opration">
           <div>
-            <span>欢迎您：admin</span>
+            <span>欢迎您：{this.props.username}</span>
             <Button type="link" onClick={this.logout}>退出</Button>
           </div>
           <div>{currentTime}</div>
@@ -70,4 +73,10 @@ class HeaderNav extends React.Component {
     )
   }
 }
-export default withRouter(HeaderNav)
+export default connect(
+  state => ({
+    title: state.admin.title,
+    username: state.user.username
+  }),
+  { logOut }
+)(withRouter(HeaderNav))

@@ -11,13 +11,12 @@ const menuList = [
     title: '新闻',
     icon: 'UsergroupAddOutlined',
     component: 'news/news',
-    hidden: false,
-    children: []
+    hidden: false
   },
   {
     path: '/news/detail/:sid',
     title: '新闻详情页',
-    component: 'detail/detail',
+    component: 'news/detail',
     hidden: true
   },
   {
@@ -46,6 +45,13 @@ const menuList = [
         // icon: 'HomeOutlined',
         component: 'menu1/menu1',
         hidden: false
+      },
+      {
+        path: '/menus/menu1/detail',
+        title: '菜单1详情',
+        // icon: 'HomeOutlined',
+        component: 'menu1/menu1Detail',
+        hidden: true
       },
       {
         path: '/menus/menu2',

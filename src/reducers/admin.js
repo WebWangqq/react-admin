@@ -1,4 +1,4 @@
-import { HEADER_TITLE } from '../actions/action-types'
+import { SETHEADTITLE } from '../actions/action-types'
 
 const adminState = {
   title: ''
@@ -6,7 +6,7 @@ const adminState = {
 
 export default (state = adminState, action) => {
   switch (action.type) {
-    case HEADER_TITLE:
+    case SETHEADTITLE:
       return {
         ...state,
         title: action.data
