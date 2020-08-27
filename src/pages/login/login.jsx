@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Checkbox, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import './login.less'
@@ -9,18 +9,59 @@ import logo from '../../assets/images/logo.png'
 
 import { Redirect } from 'react-router-dom';
 import { getLogin } from '../../actions/user'
-
+import CryptoJS from "crypto-js";
 
 const Item = Form.Item
 class Login extends Component {
   state = {
     initialValues: {
-      username: 'admin',
-      password: 'admin'
+      username: '',
+      password: '',
+      remember: true
     }
   }
-  onFinish = async (values) => {
+  setCookie = (username, password, days) => {
+    // Encrypt，加密账号密码
+    var cipherName = CryptoJS.AES.encrypt(username + '', "secretkey123").toString();
+    var cipherPwd = CryptoJS.AES.encrypt(password + '', "secretkey123").toString();
+    var exdate = new Date(); //获取时间
+    exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * days); //保存的天数
+    //字符串拼接cookie
+    window.document.cookie = "username==" + cipherName + ";path=/;expires=" + exdate.toGMTString();
+    window.document.cookie = "usersession==" + cipherPwd + ";path=/;expires=" + exdate.toGMTString();
+  }
+  getCookie = () => {
+    if (document.cookie.length > 0) {
+      var arr = document.cookie.split('; '); //这里显示的格式需要切割一下自己可输出看下
+      let username, password
+      for (var i = 0; i < arr.length; i++) {
+        var arr2 = arr[i].split('=='); //再次切割
+        if (arr2[0] === 'username') {
+          var bytes = CryptoJS.AES.decrypt(arr2[1], "secretkey123")
+          username = bytes.toString(CryptoJS.enc.Utf8)
+        } else if (arr2[0] === 'usersession') {
+          var bytes2 = CryptoJS.AES.decrypt(arr2[1], "secretkey123");
+          password = bytes2.toString(CryptoJS.enc.Utf8)
+        }
+      }
+      const initialValues = { ...this.state.initialValues }
+      initialValues.username = username
+      initialValues.password = password
+      this.setState({ initialValues })
+    }
 
+  }
+  clearCookie = () => {
+    this.setCookie("", "", -1)
+  }
+  onFinish = async (values) => {
+    // console.log(values)
+    const { username, password, remember } = values
+    if (remember) {
+      this.setCookie(username, password, 7)
+    } else {
+      this.clearCookie()
+    }
     this.props.getLogin(values)
   }
   onFinishFailed = errorInfo => {
@@ -34,7 +75,9 @@ class Login extends Component {
     } else if (value.length > 12) {
       throw new Error('请输入少于12位密码')
     }
-
+  }
+  UNSAFE_componentWillMount () {
+    this.getCookie()
   }
   render () {
     const { user, errorMsg } = this.props
@@ -52,7 +95,7 @@ class Login extends Component {
         </header>
         <section className="login-content">
           <div className={errorMsg ? "errorMsg show" : 'errorMsg'}>{errorMsg}</div>
-          <h2>用户登陆</h2>
+          <h2>用户登录</h2>
           <Form
             name="normal_login"
             className="login-form"
@@ -81,8 +124,11 @@ class Login extends Component {
                 placeholder="请输入密码"
               />
             </Item>
+            <Item name="remember" valuePropName="checked">
+              <Checkbox>记住密码</Checkbox>
+            </Item>
             <Item>
-              <Button type="primary" htmlType="submit" className="login-form-button">登陆</Button>
+              <Button type="primary" htmlType="submit" className="login-form-button">登录</Button>
             </Item>
           </Form>
         </section>
