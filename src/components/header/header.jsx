@@ -1,37 +1,31 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+// import { withRouter } from 'react-router-dom'
 import { Layout, Button, Modal } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import './index.less'
-import menuList from '../../config/menuConfig.js'
+
 import { formatTime } from '../../utils/dateUtils.js'
 import { logOut } from '../../actions/user.js'
+import { toggleCollapsed } from '../../actions/admin'
+
+
 const { Header } = Layout;
 const { confirm } = Modal;
 class HeaderNav extends React.Component {
   state = {
     currentTime: formatTime(Date.now())
   }
+  toggleCollapsed = () => {
+    this.setState({
+      collapsed: !this.state.collapsed
+    })
+  }
   getTime = () => {
     this.interId = setInterval(() => {
       const currentTime = formatTime(Date.now())
       this.setState({ currentTime })
     }, 1000)
-  }
-  getTitle = () => {
-    const path = this.props.location.pathname
-    console.log(path)
-    let title
-    menuList.forEach(item => {
-      if (item.path === path) {
-        title = item.title
-      } else if (item.children) {
-        const cItem = item.children.find(cItem => cItem.path === path)
-        if (cItem) title = cItem.title
-      }
-    })
-    return title
   }
   logout = () => {
     confirm({
@@ -40,9 +34,6 @@ class HeaderNav extends React.Component {
       content: '确认退出此系统吗？',
       onOk: () => {
         this.props.logOut()
-        // storageUtils.removeUser()
-        // memoryUtils.user = {}
-        // this.props.history.replace('/login')
       },
       onCancel () {
         console.log('取消');
@@ -51,20 +42,23 @@ class HeaderNav extends React.Component {
   }
   componentDidMount () {
     this.getTime()
-
   }
-
   componentWillUnmount () {
     clearInterval(this.interId)
   }
   render () {
     const { currentTime } = this.state
+    const { collapsed, title, username } = this.props
     return (
       <Header className="header-nav">
-        <div className="title-nav">{this.props.title}</div>
+        <div className="title-nav">
+          <Button type="primary" onClick={() => this.props.toggleCollapsed()}>
+            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
+          </Button>
+          <span className="title">{title}</span></div>
         <div className="opration">
           <div>
-            <span>欢迎您：{this.props.username}</span>
+            <span>欢迎您：{username}</span>
             <Button type="link" onClick={this.logout}>退出</Button>
           </div>
           <div>{currentTime}</div>
@@ -75,8 +69,9 @@ class HeaderNav extends React.Component {
 }
 export default connect(
   state => ({
+    collapsed: state.admin.collapsed,
     title: state.admin.title,
-    username: state.user.username
+    username: state.user.user.username
   }),
-  { logOut }
-)(withRouter(HeaderNav))
+  { toggleCollapsed, logOut }
+)(HeaderNav)

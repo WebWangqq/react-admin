@@ -8,7 +8,7 @@ import './login.less'
 import logo from '../../assets/images/logo.png'
 
 import { Redirect } from 'react-router-dom';
-import { getLogin, getMenus } from '../../actions/user'
+import { getLogin } from '../../actions/user'
 
 
 const Item = Form.Item
@@ -20,8 +20,8 @@ class Login extends Component {
     }
   }
   onFinish = async (values) => {
+
     this.props.getLogin(values)
-    // this.props.history.replace('/index')
   }
   onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
@@ -37,7 +37,7 @@ class Login extends Component {
 
   }
   render () {
-    const { user, user: { errorMsg } } = this.props
+    const { user, errorMsg } = this.props
 
     if (user && user.id) {
       return <Redirect to='/index' />
@@ -93,7 +93,8 @@ class Login extends Component {
 
 export default connect(
   state => ({
-    user: state.user
+    user: state.user.user,
+    errorMsg: state.user.errorMsg
   }),
-  { getLogin, getMenus }
+  { getLogin }
 )(Login);

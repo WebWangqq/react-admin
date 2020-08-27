@@ -3,22 +3,20 @@ import { connect } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
 
-import menuList from '../../config/menuConfig.js'
+
 import { asyncComponent } from '../../utils/asyncComponent.js'
 
 import HeaderNav from '../../components/header/header'
 import LeftNav from '../../components/left-nav/left-nav'
 
 
-const { Footer, Content } = Layout;
+
+const { Content } = Layout;
 
 const load = component => {
   return import(`../${component}.jsx`)
 }
 class Admin extends Component {
-  state = {
-    menus: []
-  }
   //根据菜单生成路由文件
   handleRouters (menu) {
     let childRouter = []
@@ -32,41 +30,43 @@ class Admin extends Component {
     return childRouter
   }
   UNSAFE_componentWillMount () {
-    this.setState({ menus: menuList })
+    this.setState = () => false;
   }
   render () {
-    const { menus } = this.state
-    let menusData = this.handleRouters(menus)
-
     const user = this.props.user
     if (!user || !user.id) {
       return <Redirect to='/login' />
-    }
-    return (
-      <Layout style={{ height: '100%' }}>
-        <LeftNav />
-        <Layout>
-          <HeaderNav />
-          <Content style={{ padding: '10px' }}>
-            <div style={{ width: '100%', height: '100%', overflow: 'auto' }}>
-              <Switch>
-                {
-                  menusData.map((item, index) => <Route path={item.path} component={asyncComponent(() => load(item.component))} key={index} exact />)
-                }
-                <Redirect to='/index' />
-              </Switch>
-            </div>
-          </Content>
-          <Footer>Footer</Footer>
+    } else {
+      let menusData = this.handleRouters(this.props.menus)
+      return (
+        <Layout style={{ height: '100%' }}>
+          <LeftNav />
+          <Layout>
+            <HeaderNav />
+            <Content style={{ padding: '10px' }}>
+              <div style={{ width: '100%', height: '100%', overflow: 'auto' }}>
+                <Switch>
+                  <Redirect from="/" to="/index" exact />
+                  {
+                    menusData.map((item, index) => <Route path={item.path} component={asyncComponent(() => load(item.component))} key={index} exact />)
+                  }
+                  <Redirect to='/404' />
+                </Switch>
+              </div>
+            </Content>
+            {/* <Footer>Footer</Footer> */}
+          </Layout>
         </Layout>
-      </Layout>
-    );
+      );
+    }
+
   }
 }
 
 export default connect(
   state => ({
-    user: state.user
+    user: state.user.user,
+    menus: state.user.menus
   }),
   {}
 )(Admin);

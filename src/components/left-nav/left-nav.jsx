@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import * as Icon from '@ant-design/icons';
-import menuList from '../../config/menuConfig'
 import { setHeadTitle } from '../../actions/admin'
 
 import './index.less'
@@ -22,32 +21,6 @@ class LeftNav extends React.Component {
     openKey: ''
   }
 
-  // getMenuNodes = (menuList) => {
-  //   var path = this.props.location.pathname
-  //   console.log(path)
-  //   return menuList.map(item => {
-  //     if (!item.hidden) {
-  //       if (!item.children || item.children.length === 0) {
-  //         return (
-  //           <Menu.Item key={item.path} icon={item.icon ? iconBC(item.icon) : ''} >
-  //             <Link to={item.path}>
-  //               <span>{item.title}</span>
-  //             </Link>
-  //           </Menu.Item>
-  //         )
-  //       } else {
-  //         const cItem = item.children.find(cItem => cItem.path === path)
-  //         if (cItem) this.opeKey = item.path
-  //         return (
-  //           <SubMenu key={item.path} icon={item.icon ? iconBC(item.icon) : ''} title={item.title}>
-  //             {this.getMenuNodes(item.children)}
-  //           </SubMenu>
-  //         )
-  //       }
-  //     }
-  //     return false
-  //   })
-  // }
   getMenuNodes = (menuList) => {
     const path = this.props.location.pathname
     return menuList.reduce((pre, item) => {
@@ -75,9 +48,8 @@ class LeftNav extends React.Component {
     }, [])
   }
 
-
   UNSAFE_componentWillMount () {
-    this.menuNodes = this.getMenuNodes(menuList)
+    this.menuNodes = this.getMenuNodes(this.props.menus)
   }
   componentDidMount () {
   }
@@ -101,10 +73,12 @@ class LeftNav extends React.Component {
     })
     return currentPath
   }
+
   render () {
-    const { selectedKey, openKey } = this.getCurrentPath(menuList)
+    const { collapsed } = this.props
+    const { selectedKey, openKey } = this.getCurrentPath(this.props.menus)
     return (
-      <Sider breakpoint="lg" width={256} className="left-nav">
+      <Sider className="left-nav" collapsed={collapsed}>
         <div className="logo" />
         <Menu
           onClick={this.handleClick}
@@ -120,6 +94,9 @@ class LeftNav extends React.Component {
   }
 }
 export default connect(
-  state => ({}),
+  state => ({
+    menus: state.user.menus,
+    collapsed: state.admin.collapsed
+  }),
   { setHeadTitle }
 )(withRouter(LeftNav))

@@ -1,5 +1,5 @@
 import { get, post } from './axios'
 
-export const login = (data) => post('/login', data)
+export const apiLogin = (data) => post('/login', data)
 
-export const menus = () => get('/menus')
+export const apiMenus = (data) => get('/menus', data)
