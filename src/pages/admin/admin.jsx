@@ -6,8 +6,8 @@ import { Layout } from 'antd';
 
 import { asyncComponent } from '../../utils/asyncComponent.js'
 
-import HeaderNav from '../../components/header/header'
-import LeftNav from '../../components/left-nav/left-nav'
+import HeaderNav from './header/header'
+import LeftNav from './left-nav/left-nav'
 
 
 

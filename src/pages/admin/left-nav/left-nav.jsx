@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import * as Icon from '@ant-design/icons';
-import { setHeadTitle } from '../../actions/admin'
+import { setHeadTitle } from '../../../actions/admin'
 
-import './index.less'
+import '../index.less'
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -51,8 +51,6 @@ class LeftNav extends React.Component {
   UNSAFE_componentWillMount () {
     this.menuNodes = this.getMenuNodes(this.props.menus)
   }
-  componentDidMount () {
-  }
   getCurrentPath = (menuList) => {
     var path = this.props.location.pathname
     let currentPath = {}
@@ -61,7 +59,6 @@ class LeftNav extends React.Component {
         if (path.indexOf(item.path) === 0) {
           currentPath.selectedKey = item.path
           currentPath.openKey = ''
-
         }
       } else {
         const cItem = item.children.find(cItem => path.indexOf(cItem.path) === 0)

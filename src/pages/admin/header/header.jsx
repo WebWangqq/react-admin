@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 // import { withRouter } from 'react-router-dom'
 import { Layout, Button, Modal } from 'antd';
 import { ExclamationCircleOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
-import './index.less'
+import '../index.less'
 
-import { formatTime } from '../../utils/dateUtils.js'
-import { logOut } from '../../actions/user.js'
-import { toggleCollapsed } from '../../actions/admin'
+import { formatTime } from '../../../utils/dateUtils'
+import { logOut } from '../../../actions/user'
+import { toggleCollapsed } from '../../../actions/admin'
 
 
 const { Header } = Layout;
