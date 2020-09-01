@@ -1,0 +1,81 @@
+create-react-app 项目名 
+
+npm run eject可以将配置释放出来，这样就可以配置端口号等webpack相关信息，并可在scripts/start下修改端口号
+
+安装antd: npm install antd --save
+按需打包 npm install react-app-rewired customize-cra babel-plugin-import 
+定义加载配置的 js 模块:config-overrides.js
+
+const {override, fixBabelImports} = require('customize-cra');
+module.exports = override( fixBabelImports('import', { 
+libraryName: 'antd',
+ libraryDirectory: 'es',
+ style: 'css', 
+}),
+ );
+ 
+const { override, fixBabelImports, addLessLoader } = require('customize-cra');
+module.exports = override(
+  fixBabelImports('import', {
+    libraryName: 'antd',
+    libraryDirectory: 'es',
+    style: true,
+  }),
+  addLessLoader({
+    javascriptEnabled: true,
+    modifyVars: { '@primary-color': '#1DA57A' },
+  }),
+);
+修改配置:package.json
+
+ "scripts": { 
+"start": "react-app-rewired start",
+ "build": "react-app-rewired build",
+ "test": "react-app-rewired test",
+ "eject": "react-scripts eject" 
+},
+
+安装less:
+ npm install less less-loader --save-dev
+
+安装router:
+npm install react-router-dom
+
+npm i react-router-config --save配置动态路由
+
+安装redux:
+npm install redux react-redux redux-thunk
+
+redux-thunk（异步中间件）
+
+npm install --save-dev redux-devtools-extension 查看状态的工具
+
+
+安装axios:
+npm i axios --save
+解决跨域npm install http-proxy-middleware
+ src目录下创建setupProxy.js，配置如下：
+const {createProxyMiddleware} =require('http-proxy-middleware')
+module.exports = function (app) {
+  app.use(
+    createProxyMiddleware('/api', {
+      target: 'http://192.168.0.172:8081',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api': ''
+      }
+    })
+  )
+}
+
+
+
+react项目 npm run eject报错解决办法：
+git add .
+git commit -m 'init'
+npm run eject
+
+配置文件路径：
+alias 添加 '@': path.resolve(__dirname, '../src'),
+
+npm start报错解决办法：npm install react-scripts
