@@ -1,0 +1,2 @@
+(this["webpackJsonpreact-admin"]=this["webpackJsonpreact-admin"]||[]).push([[9],{604:function(e,t,n){"use strict";n.r(t);var a=n(47),r=n(48),c=n(50),i=n(49),u=n(0),s=n.n(u),o=function(e){Object(c.a)(n,e);var t=Object(i.a)(n);function n(){return Object(a.a)(this,n),t.apply(this,arguments)}return Object(r.a)(n,[{key:"render",value:function(){return s.a.createElement("div",null,"menu1Detail")}}]),n}(s.a.Component);t.default=o}}]);
+//# sourceMappingURL=9.a25d4b89.chunk.js.map

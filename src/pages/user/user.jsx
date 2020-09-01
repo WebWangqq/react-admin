@@ -53,8 +53,10 @@ class User extends React.Component {
       okText: '确定',
       okType: 'danger',
       cancelText: '取消',
-      onOk () {
+      onOk: () => {
+        console.log(this)
         console.log(id);
+        this.loadMore()
       },
       onCancel () {
         console.log('Cancel');

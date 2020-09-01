@@ -11,9 +11,7 @@ import storageUtils from './utils/storageUtils'
 import { apiMenus } from './api'
 import { receiveMenus } from './actions/user'
 
-if (process.env.NODE_ENV === 'development') {
-  require('./mock');
-}
+require('./mock');
 
 let user = storageUtils.getUser()
 if (user && user.id) {

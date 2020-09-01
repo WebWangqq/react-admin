@@ -27,10 +27,8 @@ class Admin extends Component {
         return childRouter.push(item)
       }
     })
+    // console.log(childRouter)
     return childRouter
-  }
-  UNSAFE_componentWillMount () {
-    this.setState = () => false;
   }
   render () {
     const user = this.props.user
