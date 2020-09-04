@@ -1,9 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import './index.less';
 
 import echarts from 'echarts'
 // const echarts = require('echarts')
 class Index extends React.Component {
+  state = {
+    message: '你好啊',
+    isActive: true,
+    isLine: true
+  }
   componentDidMount () {
     this.showBarChart()
   }
@@ -35,9 +41,14 @@ class Index extends React.Component {
     })
   }
   render () {
+    const { message, isActive, isLine } = this.state
     return (
-      <div style={{ width: '100%', height: '300px', backgroundColor: '#ffffff', overflow: 'hidden' }}>
-        <div style={{ width: '100%', height: '100%' }} id="main"></div>
+      <div>
+        <div className={`${isActive ? "active" : null} ${isLine ? "line" : null}`}>{message}</div>
+        <div style={{ width: '100%', height: '300px', backgroundColor: '#ffffff', overflow: 'hidden' }}>
+          <div style={{ width: '100%', height: '100%' }} id="main"></div>
+        </div>
+
       </div>
 
     )

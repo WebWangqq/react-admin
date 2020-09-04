@@ -1,68 +1,118 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 组件
+组件的后缀可以是js,也可以是jsx;
+一个React项目是有成千上万个组件组成
 
-## Available Scripts
+### props属性
+props不可以被修改
 
-In the project directory, you can run:
+### 事件处理
+1、this问题
+2、向事件处理程序传递参数
 
-### `npm start`
+### state
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### React生命周期函数
+函数列表：
+  componentWillMount:在组件渲染之前执行
+  componentDidMount:在组件渲染之后执行
+  shouldComponentUpdate:返回true和false,true代表允许改变，false代表不允许改变
+  componentWillUpdate:数据在改变之前执行(state,props)
+  componentDidUpdate:数据修改完成(state,props)
+  componentWillReceiveProps:props发生改变执行
+  componentWillUnmount:组件卸载前执行
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+  componentDidCatch:子元素发生错误时触发 Demo6
+子传父
+父传子
 
-### `npm test`
+### setState更新是同步还是异步
+1.setState会引起视图的重绘
+2.在可控的情况是异步，再非可控的情况下是同步
+es6的新特性参考
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 条件渲染
 
-### `npm run build`
+### 列表 & key
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 表单
+1.受控组件
+2.非受控组件
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### Refs and the DOM
+1.管理焦点，文本选择或媒体播放
+2.出发强制动画
+3.集成第三方DOM库
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 状态提升
+组件之间的数据交互
 
-### `npm run eject`
+### 组合 vs 继承
+this.props.children
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Antd UI组件库的使用
+### 按需加载
+1.手动按需加载
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+### 跨域解决方案：
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### react-router
+1.安装 npm install react-router-dom --save
 
-### Code Splitting
+2.路由的作用：
+    单页面应用（SPA），路由跳转：切换视图
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+HashRouter:锚点链接
+BrowserRouter：h5新特性/history.push  如果上线之后，需要后台做一些处理：重定向处理 刷新404
 
-### Analyzing the Bundle Size
+exact精准匹配
+strict 更精准匹配
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+传参 /:id?/:name?  多个参数
 
-### Making a Progressive Web App
+####
+<Link to={{
+  pathname: '/courses',
+  search: '?sort=name&age=18',
+  hash: '#the-hash',
+  state: {
+    fromDashboard: true
+  }
+}} />
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+### withRouter 高阶组件
 
-### Advanced Configuration
+### Prompt  
+<Prompt when={!!this.state.name} message={'确定要离开吗'}></Prompt>
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+### redux:
 
-### Deployment
+  ### 安装redux: npm install redux react-redux redux-thunk
+   npm install --save-dev redux-devtools-extension 查看状态的工具
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
-### `npm run build` fails to minify
+redux和react-redux的区别：
+  redux:js的状态管理 createStore
+  react-redux:为了在react中容易的使用：connect provider
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+getState()
+dispatch(action)
+subscribe(listener)
+
+React.Component:不会对数据进行比较
+React.PureComponent:对数据进行浅比较 props
+
+### Fragment 代替div
+
+### 高阶组件
+1.函数
+2.参数一个组件
+3.返回值是一个组件
+
+### 动态绑定className 
+ <div className={`${isActive ? "active" : null} ${isLine ? "line" : null}`}>{message}</div>
+ <i style={{display: block ? 'block' : "none"，color: 'red'}}/>
+ <i style={ block ?  {display: 'block'} : { display: 'none'}}/>

@@ -9,12 +9,8 @@ const { confirm } = Modal
 class User extends React.Component {
   state = {
     loading: true,
-    tableData: [],
-    visible: false,
-    addOpration: true,
-    userInfo: {}
+    tableData: []
   }
-  addForm = React.createRef()
 
   initColumns = () => {
     this.columns = [
@@ -47,7 +43,9 @@ class User extends React.Component {
       }
     ]
   }
-
+  handleEdit = (record) => {
+    this.refs.addForm.loadInfo(false, record)
+  }
   handleDelete = (id) => {
     confirm({
       title: '确定删除此项内容',
@@ -56,6 +54,7 @@ class User extends React.Component {
       okType: 'danger',
       cancelText: '取消',
       onOk: () => {
+        console.log(this)
         console.log(id);
         this.loadMore()
       },
@@ -64,43 +63,8 @@ class User extends React.Component {
       },
     })
   }
-  handleEdit = (record) => {
-    this.setState({
-      visible: true,
-      addOpration: false,
-      userInfo: Object.assign({}, record)
-    })
-  }
   handleAdd = () => {
-    this.setState({
-      visible: true,
-      addOpration: true,
-      userInfo: {
-        name: '',
-        age: '',
-        address: ''
-      }
-    })
-  }
-  handleOk = () => {
-    const form = this.addForm.current.form.current
-    form.validateFields()
-      .then(values => {
-        let data = this.state.userInfo
-        data = Object.assign(data, values)
-        console.log(data)
-        this.setState({
-          visible: false
-        })
-      })
-      .catch(info => {
-        console.log('Validate Failed:', info);
-      });
-  }
-  handleCancel = () => {
-    this.setState({
-      visible: false
-    })
+    this.refs.addForm.loadInfo(true)
   }
   UNSAFE_componentWillMount () {
     this.initColumns()
@@ -127,23 +91,12 @@ class User extends React.Component {
   }
 
   render () {
-    const { loading, tableData, visible, addOpration, userInfo } = this.state
+    const { loading, tableData } = this.state
     return (
       <Card>
         <Button type="primary" icon={<PlusOutlined />} onClick={this.handleAdd}>添加</Button>
         <Table rowKey='id' loading={loading} columns={this.columns} dataSource={tableData}></Table>
-        {/* <AddForm loadMore={this.loadMore} /> */}
-        <Modal visible={visible}
-          title={addOpration ? '添加用户' : '编辑用户'}
-          centered
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          okText={'确定'}
-          cancelText={'取消'}
-        >
-          <AddForm ref={this.addForm} userInfo={userInfo} />
-        </Modal>
-
+        <AddForm ref="addForm" loadMore={this.loadMore} />
       </Card>
     )
   }
