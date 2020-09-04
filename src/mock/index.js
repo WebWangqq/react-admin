@@ -45,7 +45,7 @@ const adminMenus = [
   {
     path: '/news',
     title: '新闻',
-    icon: 'UsergroupAddOutlined',
+    icon: 'OneToOneOutlined',
     component: 'news/news',
     hidden: false
   },
@@ -60,6 +60,13 @@ const adminMenus = [
     title: '用户管理',
     icon: 'UsergroupAddOutlined',
     component: 'user/user',
+    hidden: false
+  },
+  {
+    path: '/table',
+    title: '表格demo',
+    icon: 'TableOutlined',
+    component: 'table/table',
     hidden: false
   },
   {

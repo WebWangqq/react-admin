@@ -132,7 +132,6 @@ class User extends React.Component {
       <Card>
         <Button type="primary" icon={<PlusOutlined />} onClick={this.handleAdd}>添加</Button>
         <Table rowKey='id' loading={loading} columns={this.columns} dataSource={tableData}></Table>
-        {/* <AddForm loadMore={this.loadMore} /> */}
         <Modal visible={visible}
           title={addOpration ? '添加用户' : '编辑用户'}
           centered
